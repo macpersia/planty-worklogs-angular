@@ -1,0 +1,19 @@
+
+<div *ngIf="worklog">
+  <h2>Details of {{worklog.description}}</h2>
+  <div>
+    <label>Key: </label>{{worklog.key}}</div>
+  <div>
+    <label>Date: </label>
+    <input [(ngModel)]="worklog.date" placeholder="date">
+  </div>
+  <div>
+    <label>Duration: </label>
+    <input value="{{worklog.duration}}" placeholder="duration">
+  </div>
+  <div>
+    <label>Description: </label>
+    <input [(ngModel)]="worklog.description" placeholder="description">
+  </div>
+  <button (click)="goBack()">Back</button>
+</div>
