@@ -31,7 +31,7 @@ body, input[text], button {
    font-weight: lighter;
  }
  body {
-   margin: 2em;
+   margin: 0;
  }
  body, input[text], button {
    color: #888;

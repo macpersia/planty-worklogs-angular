@@ -1,24 +1,28 @@
 
-import { Component } from 'angular2/core';
+import { Component, AfterViewInit, ViewChild } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
 import { HTTP_PROVIDERS } from 'angular2/http';
 
+import { MdButton } from '@angular2-material/button/button';
+import { MdToolbar } from '@angular2-material/toolbar/toolbar';
+import { MdSidenavLayout, MdSidenav } from '@angular2-material/sidenav/sidenav';
+
 import { WorklogService } from './services/worklog.service';
-import { DashboardComponent } from './components/dashboard/comp';
-import { WorklogsListComponent } from './components/worklogs-list/comp';
-import { WorklogDetailsComponent } from './components/worklog-details/comp';
+import { ConfigComponent } from './components/config/config.comp';
+import { DashboardComponent } from './components/dashboard/dashboard.comp';
+import { WorklogsListComponent } from './components/worklogs-list/worklogs-list.comp';
+import { WorklogDetailsComponent } from './components/worklog-details/worklog-details.comp';
 
 @Component({
   selector: 'worklogs-sync-app',
-  template: `
-    <h1>{{title}}</h1>
-    <nav>
-      <a [routerLink]="['Dashboard']">Dashboard</a>
-      <a [routerLink]="['Worklogs']">Worklogs</a>
-    </nav>
-    <router-outlet></router-outlet>`,
+  templateUrl: 'app/app.comp.html',
   styleUrls: ['app/app.comp.css'],
-  directives: [ROUTER_DIRECTIVES], //[WorklogsComponent],
+  directives: [ //[WorklogsComponent],
+    ROUTER_DIRECTIVES,
+    MdSidenavLayout, MdSidenav,
+    MdButton, MdToolbar,
+    ConfigComponent
+  ],
   providers: [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
@@ -39,6 +43,13 @@ import { WorklogDetailsComponent } from './components/worklog-details/comp';
     name: 'WorklogDetails',
     component: WorklogDetailsComponent
 }])
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+
   title = 'Worklogs Synchronizer';
+
+  @ViewChild('end') endSidenav: MdSidenav;
+
+  ngAfterViewInit() {
+    // this.endSidenav.open();
+  }
 }

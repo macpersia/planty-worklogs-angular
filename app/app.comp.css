@@ -1,4 +1,13 @@
 
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.content {
+  margin: 2em;
+  height: 100%;
+}
+
 h1 {
   font-size: 1.2em;
   color: #999;
