@@ -1,0 +1,31 @@
+
+<md-sidenav-layout>
+  <!-- <md-sidenav #start (open)="mybutton.focus()">
+    <button md-button #mybutton (click)="start.close()">Close</button>
+  </md-sidenav> -->
+  <md-toolbar>
+    <span>{{title}}</span>
+    <span class="fill-remaining-space"></span>
+    <button md-icon-button (click)="end.open()">
+      <i class="material-icons md-24">settings</i>
+    </button>
+    <!-- <md-toolbar-row>
+      <span>Second Row</span>
+    </md-toolbar-row> -->
+  </md-toolbar>
+  <div class="content">
+    <!-- <h1>{{title}}</h1> -->
+    <nav>
+      <a [routerLink]="['Dashboard']">Dashboard</a>
+      <a [routerLink]="['Worklogs']">Worklogs</a>
+    </nav>
+    <router-outlet></router-outlet>
+  </div>
+  <md-sidenav #end align="end" opened="true">
+    <config></config>
+    <span style="margin: 1em;">
+      <span class="fill-remaining-space"></span>
+      <button md-raised-button (click)="end.close()">Done</button>
+    </span>
+  </md-sidenav>
+</md-sidenav-layout>

@@ -1,0 +1,9 @@
+
+<h3>Top Worklogs</h3>
+<div class="grid grid-pad">
+  <div *ngFor="#worklog of worklogs" (click)="gotoDetails(worklog)" class="col-1-4">
+    <div class="module worklog">
+      <h4>{{worklog.date.toDateString()}}</h4>
+    </div>
+  </div>
+</div>
