@@ -8,16 +8,18 @@ import 'rxjs/Rx';
 
 import { Worklog } from '../model/worklog';
 import { MOCK_WORKLOGS } from './mock-worklogs';
+import { ReportParams } from '../model/report-params';
 
 @Injectable()
 export class WorklogService {
 
   private _worklogsListUrl = 'http://localhost:9000/worklogs';
+  // private _worklogsListUrl = 'https://diy-planty.rhcloud.com/worklogs';
 
   constructor(private http: Http) {}
 
-  getWorklogsList(): Promise<Worklog[]> {
-    let body = JSON.stringify({ /*name*/ });
+  getWorklogsList(params: ReportParams): Promise<Worklog[]> {
+    let body = JSON.stringify(params);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this._worklogsListUrl, body, options)

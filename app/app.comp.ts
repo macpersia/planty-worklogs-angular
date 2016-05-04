@@ -12,6 +12,7 @@ import { ConfigComponent } from './components/config/config.comp';
 import { DashboardComponent } from './components/dashboard/dashboard.comp';
 import { WorklogsListComponent } from './components/worklogs-list/worklogs-list.comp';
 import { WorklogDetailsComponent } from './components/worklog-details/worklog-details.comp';
+import { ReportParams } from './model/report-params';
 
 @Component({
   selector: 'worklogs-sync-app',
@@ -32,12 +33,12 @@ import { WorklogDetailsComponent } from './components/worklog-details/worklog-de
 @RouteConfig([{
     path: '/dashboard',
     name: 'Dashboard',
-    component: DashboardComponent,
-    useAsDefault: true
+    component: DashboardComponent
   }, {
     path: '/worklogs',
     name: 'Worklogs',
-    component: WorklogsListComponent
+    component: WorklogsListComponent,
+    useAsDefault: true
   }, {
     path: '/worklog/:key',
     name: 'WorklogDetails',
