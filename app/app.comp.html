@@ -6,9 +6,9 @@
   <md-toolbar>
     <span>{{title}}</span>
     <span class="fill-remaining-space"></span>
-    <button md-icon-button (click)="end.open()">
+    <!-- button md-icon-button (click)="end.open()">
       <i class="material-icons md-24">settings</i>
-    </button>
+    </button -->
     <!-- <md-toolbar-row>
       <span>Second Row</span>
     </md-toolbar-row> -->
@@ -17,11 +17,12 @@
     <!-- <h1>{{title}}</h1> -->
     <nav>
       <!-- a [routerLink]="['Dashboard']">Dashboard</a -->
+      <a [routerLink]="['Config']">Settings</a>
       <a [routerLink]="['Worklogs']">Worklogs</a>
     </nav>
     <router-outlet></router-outlet>
   </div>
-  <md-sidenav #end align="end" opened="true">
+  <!--md-sidenav #end align="end" opened="true">
     <config (onUpdate)="setReportParams($event)"></config>
-  </md-sidenav>
+  </md-sidenav -->
 </md-sidenav-layout>

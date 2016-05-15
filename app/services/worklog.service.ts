@@ -14,16 +14,18 @@ import { ReportParams } from '../model/report-params';
 export class WorklogService {
 
   private _worklogsListUrl = 'http://localhost:9000/worklogs';
+  private REPORT_PARAMS_STORAGE_KEY = 'report_params';
   // private _worklogsListUrl = 'https://diy-planty.rhcloud.com/worklogs';
   private _reportParams: ReportParams;
   constructor(private http: Http) {}
 
   setReportParams(reportParams : ReportParams) {
-    this._reportParams = reportParams;
+    sessionStorage.setItem(this.REPORT_PARAMS_STORAGE_KEY, JSON.stringify(reportParams));
   }
 
   getReportParams() : ReportParams {
-    return this._reportParams;
+
+    return JSON.parse(sessionStorage.getItem(this.REPORT_PARAMS_STORAGE_KEY));
   }
 
   getWorklogsList(params: ReportParams): Worklog[] {

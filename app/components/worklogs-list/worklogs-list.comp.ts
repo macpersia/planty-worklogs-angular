@@ -27,27 +27,13 @@ export class WorklogsListComponent implements OnActivate {
 
   routerOnActivate() {
     console.log('>>>>> START worklog-list--routerOnActivate() <<<<<');
-    console.log(this._worklogService.getReportParams());
 
-    //console.log(this._data.get('reportParams'));
-    let params : ReportParams; // = reportParams;
-
-    console.log(".............GETTING WORKLOGS...............");
+    console.log(".............GETTING WORKLOGS with the following reportParams...............");
+    let params : ReportParams = this._worklogService.getReportParams();
     console.log(params);
 
-    console.log('>>>>> retrieve worklogs <<<<<');
-    console.log(this._worklogService.getReportParams());
-
-    //this.navigationCategories = this.CategoryService.getDataRootCategoryChildren(true);
     if (params !== null && params !== undefined)
       this.worklogs = this._worklogService.getWorklogsList(params);
-    /*.subscribe(
-        data => { this.navigationCategories = data; },
-        err => { this._error.handleErrorResponse(err); },
-        () => { console.log("category-navigation--loadNavigationCategories--()---successfully loaded data root categories"); console.log(this.navigationCategories.length);
-                this.flatNavigationCategoryList = this.getNavigationCategoryList(); }
-        ); */
-
 
     /* this._worklogService.getWorklogsList(params)
       .then(

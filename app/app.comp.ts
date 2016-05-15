@@ -37,6 +37,10 @@ import { ReportParams } from './model/report-params';
     component: DashboardComponent
   }, */
   {
+    path: '/config',
+    name: 'Config',
+    component: ConfigComponent
+  }, {
     path: '/worklogs',
     name: 'Worklogs',
     component: WorklogsListComponent,
@@ -50,34 +54,11 @@ import { ReportParams } from './model/report-params';
 ])
 export class AppComponent { // implements AfterViewInit
 
-  //public reportParams : ReportParams;
   title = 'Worklogs Synchronizer';
 
-  @ViewChild('end') endSidenav: MdSidenav;
+  //@ViewChild('end') endSidenav: MdSidenav;
 
   constructor(
     private _router: Router,
     private _worklogService: WorklogService) { }
-
-  /*
-  ngAfterViewInit() {
-    console.log('>>>>> START app-ngAfterViewInit() <<<<<');
-    console.log()
-    // this.endSidenav.open();
-  } */
-
-  setReportParams(reportParams : ReportParams) {
-    console.log('>>>>> START app-setReportParams <<<<<');
-    console.log(this._worklogService.getReportParams());
-    console.log(reportParams);
-    this._worklogService.setReportParams(reportParams);
-    console.log(' >>>>> after worklogService.setRP <<<<<');
-    console.log(this._worklogService.getReportParams());
-
-    //this.reportParams = reportParams;
-    this.endSidenav.close();
-    console.log('>>>>> NAVIGATE to Worklogs <<<<<');
-    //this._router.navigate([ 'Worklogs' ]);
-    this._router.navigateByUrl('/worklog');
-  }
 }
