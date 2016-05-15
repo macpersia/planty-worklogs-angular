@@ -16,16 +16,12 @@
   <div class="content">
     <!-- <h1>{{title}}</h1> -->
     <nav>
-      <a [routerLink]="['Dashboard']">Dashboard</a>
+      <!-- a [routerLink]="['Dashboard']">Dashboard</a -->
       <a [routerLink]="['Worklogs']">Worklogs</a>
     </nav>
     <router-outlet></router-outlet>
   </div>
   <md-sidenav #end align="end" opened="true">
-    <config></config>
-    <span style="margin: 1em;">
-      <span class="fill-remaining-space"></span>
-      <button md-raised-button (click)="end.close()">Done</button>
-    </span>
+    <config (onUpdate)="setReportParams($event)"></config>
   </md-sidenav>
 </md-sidenav-layout>

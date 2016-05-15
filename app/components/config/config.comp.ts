@@ -1,5 +1,5 @@
 
-import { Component } from 'angular2/core';
+import { Component, EventEmitter, Output } from 'angular2/core';
 
 import { MdCard } from '@angular2-material/card/card';
 import { MdToolbar } from '@angular2-material/toolbar/toolbar';
@@ -17,6 +17,12 @@ import { ReportParams } from '../../model/report-params';
   ]
 })
 export class ConfigComponent {
-
   private reportParams = new ReportParams();
+  @Output() onUpdate: EventEmitter<ReportParams> = new EventEmitter();
+
+  closeSideNav() {
+    console.log('>>>>> config-closeSideNav <<<<<');
+    console.log(this.reportParams);
+    this.onUpdate.emit(this.reportParams);
+  }
 }
