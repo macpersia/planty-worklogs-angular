@@ -2,6 +2,7 @@
 export class Worklog {
   key: string;
   date: Date;
-  duration: number;
   description: string;
+  durationInJira: number;
+  durationInCats: number;
 }

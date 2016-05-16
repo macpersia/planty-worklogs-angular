@@ -1,11 +1,15 @@
 
 <h1>{{title}}</h1>
-<h2>My Worklogs</h2>
+<h2>Matching Worklogs</h2>
 <ul class="worklogs">
   <li *ngFor="#worklog of worklogs"
       [class.selected]="worklog === selectedWorklog"
       (click)="onSelect(worklog)">
-    <span class="badge">{{worklog.key}}</span> {{worklog.description}}
+    <span class="date">{{worklog.date}}</span>
+    <span class="desc">{{worklog.description}}</span>
+    <span class="duration">{{worklog.durationInJira}}</span>
+    <span class="fixed-spacer"></span>
+    <span class="duration">{{worklog.durationInCats}}</span>
   </li>
 </ul>
 <div *ngIf="selectedWorklog">

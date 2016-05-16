@@ -29,22 +29,25 @@ export class WorklogsListComponent implements OnActivate {
     console.log('>>>>> START worklog-list--routerOnActivate() <<<<<');
 
     console.log(".............GETTING WORKLOGS with the following reportParams...............");
-    let params : ReportParams = this._worklogService.getReportParams();
+    let params = this._worklogService.getReportParams();
     console.log(params);
 
-    if (params !== null && params !== undefined)
-      this.worklogs = this._worklogService.getWorklogsList(params);
-
-    /* this._worklogService.getWorklogsList(params)
+    if (params) {
+      params.tzOffsetMinutes = -480;
+      //this.worklogs = this._worklogService.getWorklogsList(params);
+      this._worklogService.getWorklogsList(params)
       .then(
-          worklogs => this.worklogs = worklogs,
+          worklogs => {
+            this.worklogs = worklogs;
+            console.log(this.worklogs);
+          },
           error => this.errorMessage = <any>error
-      ); */
-      console.log(this.worklogs);
+      );
       // .subscribe(
       //   worklogs => this.worklogs = worklogs,
       //   error => this.errorMessage = <any>error
       // );
+    }
   }
 
   addWorklog (date: Date, duration: number, description: string) {

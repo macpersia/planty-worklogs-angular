@@ -7,7 +7,7 @@
   margin: 0 0 2em 0;
   list-style-type: none;
   padding: 0;
-  width: 20em;
+  width: 40em;
 }
 .worklogs li {
   cursor: pointer;
@@ -15,8 +15,8 @@
   left: 0;
   background-color: #EEE;
   margin: .5em;
-  padding: .3em 0;
-  height: 1.6em;
+  padding: 0 .3em 0 0;
+  /*height: 1.6em;*/
   border-radius: 4px;
 }
 .worklogs li.selected:hover {
@@ -26,23 +26,52 @@
 .worklogs li:hover {
   color: #607D8B;
   background-color: #DDD;
-  left: .1em;
+  /*left: .1em;*/
 }
 .worklogs .text {
   position: relative;
-  top: -3px;
+  /*top: -3px;*/
 }
-.worklogs .badge {
+.worklogs .date {
+  vertical-align: baseline;
   display: inline-block;
   font-size: small;
   color: white;
-  padding: 0.8em 0.7em 0 0.7em;
+  padding: 0.7em;
   background-color: #607D8B;
-  line-height: 1em;
+  /*line-height: 1em;*/
   position: relative;
-  left: -1px;
-  top: -4px;
-  height: 1.8em;
-  margin-right: .8em;
+  /*left: -1px;
+  top: -4px;*/
+
+  /*height: 1.8em;*/
+  height: inherit;
+
+  margin-right: .7em;
   border-radius: 4px 0 0 4px;
+}
+
+.worklogs .desc {
+  vertical-align: baseline;
+  display: inline-block;
+  /*font-size: small;*/
+  position: relative;
+  margin-left: 2em;
+  margin-right: 2em;
+  width: 10em;
+}
+
+.worklogs .duration {
+  vertical-align: baseline;
+  display: inline-block;
+  /*font-size: small;*/
+  position: relative;
+  margin-right: .7em;
+  width: 4em;
+}
+
+.worklogs .fixed-spacer {
+  display: inline-block;
+  position: relative;
+  width: 4em;
 }
