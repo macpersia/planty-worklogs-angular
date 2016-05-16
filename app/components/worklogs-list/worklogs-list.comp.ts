@@ -7,12 +7,14 @@ import { Worklog } from '../../model/worklog';
 import { ReportParams } from '../../model/report-params';
 import { WorklogService } from '../../services/worklog.service';
 import { WorklogDetailsComponent } from '../worklog-details/worklog-details.comp';
+import { MyDateWorkaroudPipe } from '../../pipes/my-date-workaround-pipe';
 
 
 @Component({
     selector: 'worklogs',
     templateUrl : 'app/components/worklogs-list/worklogs-list.comp.html',
-    styleUrls: ['app/components/worklogs-list/worklogs-list.comp.css']
+    styleUrls: ['app/components/worklogs-list/worklogs-list.comp.css'],
+    pipes: [ MyDateWorkaroudPipe ]
 })
 export class WorklogsListComponent implements OnActivate {
 
@@ -33,7 +35,7 @@ export class WorklogsListComponent implements OnActivate {
     console.log(params);
 
     if (params) {
-      params.tzOffsetMinutes = -480;
+      params.tzOffsetMinutes = new Date().getTimezoneOffset();
       //this.worklogs = this._worklogService.getWorklogsList(params);
       this._worklogService.getWorklogsList(params)
       .then(

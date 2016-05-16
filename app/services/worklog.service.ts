@@ -29,7 +29,7 @@ export class WorklogService {
 
   getWorklogsList(params: ReportParams): Promise<Worklog[]> {
     console.log('>>>>> START worklog-service--getWorklogsList <<<<<');
-    console.log(params);
+    // console.log(params);
     // return new Promise<Worklog[]>((resolve, reject) => {
     //   resolve(MOCK_WORKLOGS);
     // });
@@ -46,9 +46,8 @@ export class WorklogService {
     if (res.status < 200 || res.status >= 300) {
       throw new Error('Bad response status: ' + res.status);
     }
-    let body = res.json().matches;
-    //return body.data || { };
-    return body;
+    let matches = res.json().matches;
+    return Worklog.fromJsonArray(matches);
   }
 
   private handleError (error: any) {

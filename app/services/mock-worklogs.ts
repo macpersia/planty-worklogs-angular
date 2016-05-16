@@ -24,20 +24,20 @@ import { Worklog } from '../model/worklog';
 //   duration: 2.0,
 //   description: "My Sample Worklog 4"
 // }];
-export let MOCK_WORKLOGS: Worklog[] = [{
+export let MOCK_WORKLOGS: Worklog[] = Worklog.fromJsonArray([{
   date: "2016-05-10",
   description: "BICM-3200",
   durationInJira:6,
   durationInCats:6
 }, {
-  date: "2016-05-10",
+  date:"2016-05-10",
   description: "BICM-3213",
   durationInJira: 2,
-  // durationInCats: 2
+  durationInCats: undefined
 }, {
   date: "2016-05-11",
   description: "BICM-3200",
-  // durationInJira: 8,
+  durationInJira: undefined,
   durationInCats: 8
 }, {
   date: "2016-05-12",
@@ -49,4 +49,4 @@ export let MOCK_WORKLOGS: Worklog[] = [{
   description: "BICM-3200",
   durationInJira: 7.5,
   durationInCats: 8
-}];
+}]);
