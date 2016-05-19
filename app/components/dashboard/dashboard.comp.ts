@@ -21,8 +21,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     console.log('>>>>> START dashboard-ngOnInit <<<<<');
-    this._worklogService.getWorklogs()
-      .then(worklogs => this.worklogs = worklogs.slice(0, 2));
+    // this._worklogService.getWorklogs()
+    //   .then(worklogs => this.worklogs = worklogs.slice(0, 2));
     console.log(this.worklogs);
   }
 

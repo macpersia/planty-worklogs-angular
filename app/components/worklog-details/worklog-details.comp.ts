@@ -23,8 +23,8 @@ export class WorklogDetailsComponent implements OnInit {
       console.log('>>>>>> START worklog-details--ngOnInit() <<<<<');
       // let id = +this._routeParams.get('id');
       let key = this._routeParams.get('key');
-      this._worklogService.getWorklog(key)
-        .then(worklog => this.worklog = worklog)
+      // this._worklogService.getWorklog(key)
+      //   .then(worklog => this.worklog = worklog)
     }
 
     goBack() {
