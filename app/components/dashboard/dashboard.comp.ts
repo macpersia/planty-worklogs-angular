@@ -1,6 +1,6 @@
 
-import { Component, OnInit } from 'angular2/core';
-import { Router } from 'angular2/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router-deprecated';
 
 import { Worklog } from '../../model/worklog';
 import { WorklogService } from '../../services/worklog.service';

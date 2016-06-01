@@ -1,12 +1,14 @@
 
-import { Component, Input, OnInit } from 'angular2/core';
-// import { Router, OnActivate, RouteSegment } from 'angular2/router';
-import { Router, OnActivate, RouteData, RouteParams } from 'angular2/router';
+import { Component, Input, OnInit } from '@angular/core';
+// import { Router, OnActivate, RouteSegment } from '@angular/router-deprecated';
+import { Router, OnActivate, RouteData, RouteParams } from '@angular/router-deprecated';
 
 import { MdCard } from '@angular2-material/card/card';
 import { MdToolbar } from '@angular2-material/toolbar/toolbar';
 import { MdInput, MdHint } from '@angular2-material/input/input';
 import { MdButton } from '@angular2-material/button/button';
+import { MdProgressBar } from '@angular2-material/progress-bar/progress-bar';
+import { MdProgressCircle } from '@angular2-material/progress-circle/progress-circle';
 
 import { Worklog } from '../../model/worklog';
 import { ReportParams } from '../../model/report-params';
@@ -21,7 +23,8 @@ import { MyDateWorkaroudPipe } from '../../pipes/my-date-workaround-pipe';
     styleUrls: ['app/components/worklogs-list/worklogs-list.comp.css'],
     pipes: [ MyDateWorkaroudPipe ],
     directives: [
-      MdCard, MdToolbar, MdInput, MdHint, MdButton
+      MdCard, MdToolbar, MdInput, MdHint, MdButton,
+      MdProgressBar, MdProgressCircle
     ]
 })
 export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
@@ -30,6 +33,7 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
   worklogs: Worklog[];
   selectedWorklog: Worklog;
   errorMessage;
+  isLoading = false;
 
   constructor(
     private _router: Router,
@@ -89,6 +93,7 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
     //this.getWorklogs(this.reportParams);
 
     if (this.reportParams) {
+      this.isLoading = true;
       //update the reportParams on sessionStorage
       this._worklogService.setReportParams(this.reportParams);
 
@@ -98,10 +103,14 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
       .then(
           worklogs => {
             this.worklogs = worklogs;
+            this.isLoading = false;
             console.log('>>> successfully retrieved the folowwing worklogs: ');
             console.log(this.worklogs);
           },
-          error => this.errorMessage = <any>error
+          error => {
+            this.errorMessage = <any>error
+            this.isLoading = false;
+          }
       );
     }
   }
@@ -119,6 +128,8 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
         error => this.errorMessage = <any>error
     );
   }
+
+  isSynchronized = (worklog: Worklog) => worklog.durationInJira == worklog.durationInCats;
 
   updateJira(worklog : Worklog) {
     console.log('>>>>> START updateJira()');
@@ -191,8 +202,8 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
   }
 
   onSelect(worklog: Worklog) {
-    // if (console) console.log(">>>> clicked on worklog: " + worklog);
-    this.selectedWorklog = worklog;
+    // // if (console) console.log(">>>> clicked on worklog: " + worklog);
+    // this.selectedWorklog = worklog;
   }
 
   gotoDetails() {

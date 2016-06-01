@@ -27,6 +27,10 @@
 </span>
 
 <h2>Matching Worklogs</h2>
+<div [ngSwitch]="isLoading">
+  <md-progress-bar mode="indeterminate" *ngSwitchWhen="true"></md-progress-bar>
+</div>
+
 <ul class="worklogs" style="width: 70%">
 
   <li *ngFor="#worklog of worklogs"
@@ -36,22 +40,22 @@
     <span class="date">{{worklog.date | myDateWorkaround}}</span>
     <span class="desc">{{worklog.description}}</span>
     <span class="duration">{{worklog.durationInJira}}</span>
-    <button md-icon-button color="primary" (click)="updateCats(worklog)"> <!---->
+    <button md-icon-button color="primary" (click)="updateCats(worklog)" [disabled]="isSynchronized(worklog)"> <!---->
       <i class="material-icons md-24">arrow_forward</i>
     </button>
     <span class="fixed-spacer"></span>
 
     <span [ngSwitch]="worklog.durationInJira != worklog.durationInCats">
-      <button md-icon-button style="color:red" *ngSwitchWhen=true> <!---->
+      <button md-icon-button *ngSwitchWhen=true disabled style="color:red"> <!---->
         <i class="material-icons md-24">close</i>
       </button>
-      <button md-icon-button style="color:green" *ngSwitchWhen=false> <!---->
+      <button md-icon-button *ngSwitchWhen=false disabled style="color:green"> <!---->
         <i class="material-icons md-24">check</i>
       </button>
     </span>
 
     <span class="fixed-spacer"></span>
-    <button md-icon-button color="primary" (click)="updateJira(worklog)"> <!---->
+    <button md-icon-button color="primary" (click)="updateJira(worklog)" [disabled]="isSynchronized(worklog)"> <!---->
       <i class="material-icons md-24">arrow_back</i>
     </button>
     <span class="duration">{{worklog.durationInCats}}</span>

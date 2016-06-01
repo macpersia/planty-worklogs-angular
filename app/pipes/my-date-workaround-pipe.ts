@@ -4,18 +4,18 @@ import {
   isPresent,
   Date,
   DateWrapper,
-  CONST,
+  // CONST,
   isBlank,
   FunctionWrapper
-} from 'angular2/src/facade/lang';
-import {DateFormatter} from 'angular2/src/facade/intl';
-import {PipeTransform, WrappedValue, Pipe, Injectable} from 'angular2/core';
-import {StringMapWrapper, ListWrapper} from 'angular2/src/facade/collection';
+} from '@angular/core/src/facade/lang';
+import {DateFormatter} from '@angular/common/src/facade/intl';
+import {PipeTransform, WrappedValue, Pipe, Injectable, BaseException} from '@angular/core';
+import {StringMapWrapper, ListWrapper} from '@angular/core/src/facade/collection';
 
-import {InvalidPipeArgumentException} from 'angular2/src/common/pipes/invalid_pipe_argument_exception';
+// import {InvalidPipeArgumentException} from '@angular/core/src/facade/exceptions';
 
 
-@CONST()
+// @CONST()
 @Pipe({name: 'myDateWorkaround', pure: true})
 @Injectable()
 export class MyDateWorkaroudPipe implements PipeTransform {
@@ -24,7 +24,8 @@ export class MyDateWorkaroudPipe implements PipeTransform {
     if (isBlank(value)) return null;
 
     if (!this.supports(value)) {
-      throw new InvalidPipeArgumentException(MyDateWorkaroudPipe, value);
+      // throw new InvalidPipeArgumentException(MyDateWorkaroudPipe, value);
+      throw new BaseException("InvalidPipeArgument: " + MyDateWorkaroudPipe + ", " + value);
     }
     if (isNumber(value)) {
       value = DateWrapper.fromMillis(value);

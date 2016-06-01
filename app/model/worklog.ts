@@ -1,5 +1,5 @@
 
-import { DateWrapper } from 'angular2/src/facade/lang';
+import { DateWrapper } from '@angular/core/src/facade/lang';
 
 export class Worklog {
   constructor(

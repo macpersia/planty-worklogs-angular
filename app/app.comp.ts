@@ -1,7 +1,7 @@
 
-import { Component, AfterViewInit, ViewChild } from 'angular2/core';
-import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router } from 'angular2/router';
-import { HTTP_PROVIDERS } from 'angular2/http';
+import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Router } from '@angular/router-deprecated';
+import { HTTP_PROVIDERS } from '@angular/http';
 
 import { MdButton } from '@angular2-material/button/button';
 import { MdToolbar } from '@angular2-material/toolbar/toolbar';

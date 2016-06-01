@@ -1,7 +1,7 @@
 
-import { Component, EventEmitter, Output } from 'angular2/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
-import { Router } from 'angular2/router';
+import { Router } from '@angular/router-deprecated';
 
 import { MdCard } from '@angular2-material/card/card';
 import { MdToolbar } from '@angular2-material/toolbar/toolbar';
