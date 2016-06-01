@@ -1,7 +1,12 @@
 
-import { Component, Input } from 'angular2/core';
+import { Component, Input, OnInit } from 'angular2/core';
 // import { Router, OnActivate, RouteSegment } from 'angular2/router';
 import { Router, OnActivate, RouteData, RouteParams } from 'angular2/router';
+
+import { MdCard } from '@angular2-material/card/card';
+import { MdToolbar } from '@angular2-material/toolbar/toolbar';
+import { MdInput, MdHint } from '@angular2-material/input/input';
+import { MdButton } from '@angular2-material/button/button';
 
 import { Worklog } from '../../model/worklog';
 import { ReportParams } from '../../model/report-params';
@@ -14,10 +19,14 @@ import { MyDateWorkaroudPipe } from '../../pipes/my-date-workaround-pipe';
     selector: 'worklogs',
     templateUrl : 'app/components/worklogs-list/worklogs-list.comp.html',
     styleUrls: ['app/components/worklogs-list/worklogs-list.comp.css'],
-    pipes: [ MyDateWorkaroudPipe ]
+    pipes: [ MyDateWorkaroudPipe ],
+    directives: [
+      MdCard, MdToolbar, MdInput, MdHint, MdButton
+    ]
 })
-export class WorklogsListComponent implements OnActivate {
+export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
 
+  private reportParams = new ReportParams();
   worklogs: Worklog[];
   selectedWorklog: Worklog;
   errorMessage;
@@ -27,6 +36,37 @@ export class WorklogsListComponent implements OnActivate {
     private _worklogService: WorklogService,
     private _routeParams : RouteParams ) { }
 
+  ngOnInit() {
+    console.log('>>>>> START worklogs-list--ngOnInit');
+
+    if (this._worklogService.getReportParams() !== null) {
+      this.reportParams = this._worklogService.getReportParams();
+    }
+    console.log(this.reportParams);
+  }
+
+  isReportParamsValid(reportParams : ReportParams) : boolean {
+    let isValid = true;
+
+    if (reportParams === null || reportParams === undefined
+          || reportParams.fromDate === null || reportParams.fromDate === undefined
+          || reportParams.toDate === null || reportParams.toDate === undefined
+          || reportParams.catsParams === null || reportParams.catsParams === undefined
+          || reportParams.catsParams.baseUrl === null || reportParams.catsParams.baseUrl === undefined
+          || reportParams.catsParams.password === null || reportParams.catsParams.password === undefined
+          || reportParams.catsParams.username === null || reportParams.catsParams.username === undefined
+          || reportParams.jiraParams === null || reportParams.jiraParams === undefined
+          || reportParams.jiraParams.baseUrl === null || reportParams.jiraParams.baseUrl === undefined
+          || reportParams.jiraParams.username === null || reportParams.jiraParams.username === undefined
+          || reportParams.jiraParams.password === null || reportParams.jiraParams.password === undefined
+          || reportParams.jiraParams.jiraQuery === null || reportParams.jiraParams.jiraQuery === undefined
+          || reportParams.jiraParams.author === null || reportParams.jiraParams.author === undefined
+    ) {
+      isValid = false;
+    }
+    return isValid;
+  }
+
   routerOnActivate() {
     console.log('>>>>> START worklog-list--routerOnActivate() <<<<<');
 
@@ -34,21 +74,111 @@ export class WorklogsListComponent implements OnActivate {
     let params = this._worklogService.getReportParams();
     console.log(params);
 
-    if (params) {
-      params.tzOffsetMinutes = new Date().getTimezoneOffset();
-      //this.worklogs = this._worklogService.getWorklogsList(params);
-      this._worklogService.getWorklogsList(params)
-      .then(
-          worklogs => {
-            this.worklogs = worklogs;
-            console.log(this.worklogs);
-          },
-          error => this.errorMessage = <any>error
-      );
+    if (this.isReportParamsValid(params)) {
+      this.getWorklogs(params);
       // .subscribe(
       //   worklogs => this.worklogs = worklogs,
       //   error => this.errorMessage = <any>error
       // );
+    }
+  }
+
+  retrieveWorklogs() {
+    console.log('>>>>> START worklogs-list--retrieveWorklogs()');
+    console.log(this.reportParams);
+    //this.getWorklogs(this.reportParams);
+
+    if (this.reportParams) {
+      //update the reportParams on sessionStorage
+      this._worklogService.setReportParams(this.reportParams);
+
+      this.reportParams.tzOffsetMinutes = new Date().getTimezoneOffset();
+      //this.worklogs = this._worklogService.getWorklogsList(params);
+      this._worklogService.getWorklogsList(this.reportParams)
+      .then(
+          worklogs => {
+            this.worklogs = worklogs;
+            console.log('>>> successfully retrieved the folowwing worklogs: ');
+            console.log(this.worklogs);
+          },
+          error => this.errorMessage = <any>error
+      );
+    }
+  }
+
+  getWorklogs(params: ReportParams) {
+    params.tzOffsetMinutes = new Date().getTimezoneOffset();
+    //this.worklogs = this._worklogService.getWorklogsList(params);
+    this._worklogService.getWorklogsList(params)
+    .then(
+        worklogs => {
+          this.worklogs = worklogs;
+          console.log('>>> successfully retrieved the folowwing worklogs: ');
+          console.log(this.worklogs);
+        },
+        error => this.errorMessage = <any>error
+    );
+  }
+
+  updateJira(worklog : Worklog) {
+    console.log('>>>>> START updateJira()');
+    console.log(worklog);
+    if (worklog.durationInJira === undefined) {
+      console.log('............ ADD entry in JIRA ............');
+    } else if (worklog.durationInCats && worklog.durationInCats != worklog.durationInJira) {
+      console.log('............ UPDATE hours in JIRA ............');
+
+      let jiraConnConfig = {
+        'baseUri': this.reportParams.jiraParams.baseUrl,
+        'username': this.reportParams.jiraParams.username,
+        'password': this.reportParams.jiraParams.password
+      }
+
+      let params = {
+        'connConfig': jiraConnConfig,
+        'key': worklog.description,
+        'date': new MyDateWorkaroudPipe().transform(worklog.date, []),
+        'duration': worklog.durationInCats
+      };
+
+      let status = this._worklogService.updateHoursInJira(params)
+      .subscribe(
+        res => {
+          console.log('....................what is res');
+          console.log(res);
+          console.log(res.status);
+          console.log(res.statusText);
+          if (res.statusText === 'Ok') {
+          console.log('>>> successfully updated the hours in Jira from: ' +worklog.durationInJira +' to: ' +worklog.durationInCats);
+          worklog.durationInJira = worklog.durationInCats;
+        }
+      },
+        error => {}
+      );
+
+      /*
+      this._worklogService.updateHoursInJira(params)
+      .then(
+          _worklog => {
+            //worklog = _worklog;
+            worklog.durationInJira = worklog.durationInCats;
+            console.log('>>> successfully updated the hours in Jira from the ff worklog: ');
+            console.log('=> OLD hours: ' +worklog.durationInJira);
+            console.log('=> NEW hours: ' +_worklog.durationInJira);
+          },
+          error => this.errorMessage = <any>error
+      ); */
+
+    }
+  }
+
+  updateCats(worklog : Worklog) {
+    console.log('>>>>> START updateCats()');
+    console.log(worklog);
+    if (worklog.durationInCats === undefined) {
+      console.log('............ ADD entry in CATS ............');
+    } else if (worklog.durationInJira && worklog.durationInJira != worklog.durationInCats) {
+      console.log('............ UPDATE hours in CATS ............');
     }
   }
 

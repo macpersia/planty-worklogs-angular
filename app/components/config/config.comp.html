@@ -1,86 +1,78 @@
-
-
-<md-card style="width: 50%" class="demo-card demo-basic">
-  <md-toolbar color="primary">Date Criteria</md-toolbar>
-  <md-card-content>
-    <!-- <form> -->
-    <!-- <table style="width: 100%" cellspacing="0"><tr> -->
-    <table style="width: 100%"><tr>
-      <td><md-input placeholder="From" style="width: 100%"
-        [(ngModel)]="reportParams.fromDate">
-        <md-hint align="end">Date ('yyyy-MM-dd')</md-hint>
-      </md-input></td>
-      <td><md-input placeholder="To" style="width: 100%"
-        [(ngModel)]="reportParams.toDate">
-        <md-hint align="end">Date ('yyyy-MM-dd')</md-hint>
-      </md-input></td>
-    </tr></table>
-  </md-card-content>
-</md-card>
-<md-card style="width: 50%" class="demo-card demo-basic">
-  <md-toolbar color="accent">JIRA</md-toolbar>
-  <md-card-content>
-    <table style="width: 100%" cellspacing="0">
-      <tr><td colspan="2">
-        <md-input placeholder="Base URL" style="width: 100%"
-        [(ngModel)]="reportParams.jiraParams.baseUrl">
+<div class="content-container" layout="row">
+<div class="content-content" layout="column" layout-gt-xs="row">
+  <md-card style="width: 60%" class="demo-card demo-basic">
+    <md-toolbar color="accent">JIRA</md-toolbar>
+    <md-card-content>
+      <table style="width: 100%" cellspacing="0">
+        <tr><td colspan="2">
+          <md-input placeholder="Base URL" style="width: 100%"
+          [(ngModel)]="reportParams.jiraParams.baseUrl">
+          <md-hint align="end">Required</md-hint>
+        </md-input>
+      </td></tr><tr>
+        <td>
+          <md-input placeholder="Username"
+          [(ngModel)]="reportParams.jiraParams.username">
+          <md-hint align="end">Required</md-hint>
+        </md-input>
+      </td><td>
+        <md-input placeholder="Password"
+        [(ngModel)]="reportParams.jiraParams.password" type="password">
         <md-hint align="end">Required</md-hint>
       </md-input>
-    </td></tr><tr>
-      <td>
-        <md-input placeholder="Username"
-        [(ngModel)]="reportParams.jiraParams.username">
-        <md-hint align="end">Required</md-hint>
-      </md-input>
-    </td><td>
-      <md-input placeholder="Password"
-      [(ngModel)]="reportParams.jiraParams.password" type="password">
-      <md-hint align="end">Required</md-hint>
-    </md-input>
-  </td></tr><tr><td colspan="2">
-    <md-input placeholder="JIRA Query String" style="width: 100%"
-    [(ngModel)]="reportParams.jiraParams.jiraQuery">
-    <md-hint align="end">Required</md-hint>
-  </md-input>
-</td></tr><tr><td>
-  <md-input placeholder="{{reportParams.jiraParams.username}}"
-  [(ngModel)]="reportParams.jiraParams.author">
-  <md-hint align="start">Author's Username</md-hint>
-  <md-hint align="end">(Optional)</md-hint>
-</md-input>
-</td></tr>
-</table>
-<!-- </form> -->
-</md-card-content>
-</md-card>
-
-<md-card style="width: 50%" class="demo-card demo-basic">
-  <md-toolbar color="accent">CATS</md-toolbar>
-  <md-card-content>
-    <table style="width: 100%" cellspacing="0">
-      <tr><td colspan="2">
-        <md-input placeholder="Base URL" style="width: 100%"
-        [(ngModel)]="reportParams.catsParams.baseUrl">
-        <md-hint align="end">Required</md-hint>
-      </md-input>
-    </td></tr><tr>
-      <td>
-        <md-input placeholder="Username"
-        [(ngModel)]="reportParams.catsParams.username">
-        <md-hint align="end">Required</md-hint>
-      </md-input>
-    </td><td>
-      <md-input placeholder="Password"
-      [(ngModel)]="reportParams.catsParams.password" type="password">
+    </td></tr>
+    <tr><td colspan="2">
+      <md-input placeholder="JIRA Query String" style="width: 100%"
+      [(ngModel)]="reportParams.jiraParams.jiraQuery">
       <md-hint align="end">Required</md-hint>
     </md-input>
   </td></tr>
-</table>
-<!-- </form> -->
-</md-card-content>
-</md-card>
+  <tr><td>
+    <md-input placeholder="{{reportParams.jiraParams.username}}"
+    [(ngModel)]="reportParams.jiraParams.author">
+    <md-hint align="start">Author's Username</md-hint>
+    <md-hint align="end">(Optional)</md-hint>
+  </md-input>
+  </td></tr>
+  </table>
+  <!-- </form> -->
+  </md-card-content>
+  </md-card>
 
+  <md-card style="width: 60%" class="demo-card demo-basic">
+    <md-toolbar color="accent">CATS</md-toolbar>
+    <md-card-content>
+      <table style="width: 100%" cellspacing="0">
+        <tr><td colspan="2">
+          <md-input placeholder="Base URL" style="width: 100%"
+          [(ngModel)]="reportParams.catsParams.baseUrl">
+          <md-hint align="end">Required</md-hint>
+        </md-input>
+      </td></tr><tr>
+        <td>
+          <md-input placeholder="Username"
+          [(ngModel)]="reportParams.catsParams.username">
+          <md-hint align="end">Required</md-hint>
+        </md-input>
+      </td><td>
+        <md-input placeholder="Password"
+        [(ngModel)]="reportParams.catsParams.password" type="password">
+        <md-hint align="end">Required</md-hint>
+      </md-input>
+    </td></tr>
+    <tr><td colspan="2">
+      <md-input placeholder="Filter" style="width: 100%"
+      [(ngModel)]="reportParams.catsParams.filter">
+      <md-hint align="end">Required</md-hint>
+    </md-input>
+  </td></tr>
+  </table>
+  <!-- </form> -->
+  </md-card-content>
+  </md-card>
+</div>
 <span>
   <span class="fill-remaining-space"></span>
-  <button style="margin-top: 2em; margin-right: 2em" md-raised-button (click)="setReportParams()">Done</button>
+  <button style="margin-top: 2em; margin-right: 2em" md-raised-button color="primary" (click)="saveReportParams()">Done</button>
 </span>
+</div>

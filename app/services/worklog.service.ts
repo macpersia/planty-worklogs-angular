@@ -8,23 +8,27 @@ import 'rxjs/Rx';
 
 import { Worklog } from '../model/worklog';
 import { MOCK_WORKLOGS } from './mock-worklogs';
+import { MOCK_UPDATED_JIRA_WORKLOG } from './mock-updateHoursInJira';
 import { ReportParams } from '../model/report-params';
 
 @Injectable()
 export class WorklogService {
 
   // private _worklogsListUrl = 'https://diy-planty.rhcloud.com/worklogs';
-  private _worklogsListUrl = 'http://localhost:9000/worklogs';
+  //private _worklogsListUrl = 'http://localhost:9000/worklogs';
+  private _worklogsListUrl = 'http://10.95.98.119:9000/worklogs';
+  private _updateHoursInJira = 'http://10.95.98.119:9000/worklogHours';
   private REPORT_PARAMS_STORAGE_KEY = 'report_params';
 
   constructor(private http: Http) {}
 
   setReportParams(reportParams : ReportParams) {
-    sessionStorage.setItem(this.REPORT_PARAMS_STORAGE_KEY, JSON.stringify(reportParams));
+    localStorage.setItem(this.REPORT_PARAMS_STORAGE_KEY, JSON.stringify(reportParams));
+    //localStorage.setItem(this.REPORT_PARAMS_STORAGE_KEY, JSON.stringify(reportParams));
   }
 
   getReportParams() : ReportParams {
-    return JSON.parse(sessionStorage.getItem(this.REPORT_PARAMS_STORAGE_KEY));
+    return JSON.parse(localStorage.getItem(this.REPORT_PARAMS_STORAGE_KEY));
   }
 
   getWorklogsList(params: ReportParams): Promise<Worklog[]> {
@@ -40,6 +44,36 @@ export class WorklogService {
                     .toPromise()
                     .then(this.extractData)
                     .catch(this.handleError);
+  }
+
+  updateHoursInJira(params : any): Observable<Response> {
+    console.log('>>>>> START worklog-service--updateHoursInJira <<<<<');
+    console.log(params);
+
+    let body = JSON.stringify(params);
+    console.log(body);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    //return MOCK_UPDATED_JIRA_WORKLOG;
+    /*
+     return new Promise<Worklog>((resolve, reject) => {
+       resolve(MOCK_UPDATED_JIRA_WORKLOG);
+     }); */
+
+     //return this.extractResponseStatus();
+
+    // this.http.put(this._updateHoursInJira, body, options)
+    return this.http.put(this._updateHoursInJira, body, options);
+  }
+
+  private extractResponseStatus(res: Response): string { //res: Response
+    /*
+    if (res.status < 200 || res.status >= 300) {
+      throw new Error('Bad response status: ' + res.status);
+    } */
+    //let matches = res.json().matches;
+    //return res.status;
+    return res.statusText;
   }
 
   private extractData(res: Response) {

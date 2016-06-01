@@ -28,17 +28,17 @@ export class ConfigComponent {
     private _worklogService: WorklogService,
     private _router: Router) { }
 
-    routerOnActivate() {
-      console.log('>>>>> START worklog-list--routerOnActivate() <<<<<');
+  routerOnActivate() {
+    console.log('>>>>> START worklog-list--routerOnActivate() <<<<<');
 
-      console.log(".............GETTING reportParams from sessionStorage...............");
-      let storedReportParams = this._worklogService.getReportParams();
-      console.log(storedReportParams);
-      if (storedReportParams)
-        this.reportParams = storedReportParams;
-    }
+    console.log(".............GETTING reportParams from sessionStorage...............");
+    let storedReportParams = this._worklogService.getReportParams();
+    console.log(storedReportParams);
+    if (storedReportParams)
+      this.reportParams = storedReportParams;
+  }
 
-  setReportParams() {
+  saveReportParams() {
     console.log('>>>>> config-setReportParams <<<<<');
     console.log(this.reportParams);
     this._worklogService.setReportParams(this.reportParams);
