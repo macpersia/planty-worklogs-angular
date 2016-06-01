@@ -20,7 +20,7 @@ export class WorklogService {
   private _updateHoursInJira = 'http://10.95.98.119:9000/worklogHours';
   private REPORT_PARAMS_STORAGE_KEY = 'report_params';
 
-  constructor(private http: Http) {}
+  constructor(private _http: Http) {}
 
   setReportParams(reportParams : ReportParams) {
     localStorage.setItem(this.REPORT_PARAMS_STORAGE_KEY, JSON.stringify(reportParams));
@@ -40,7 +40,7 @@ export class WorklogService {
     let body = JSON.stringify(params);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this._worklogsListUrl, body, options)
+    return this._http.post(this._worklogsListUrl, body, options)
                     .toPromise()
                     .then(this.extractData)
                     .catch(this.handleError);
