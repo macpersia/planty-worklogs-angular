@@ -63,7 +63,7 @@ export class WorklogService {
      //return this.extractResponseStatus();
 
     // this.http.put(this._updateHoursInJira, body, options)
-    return this.http.put(this._updateHoursInJira, body, options);
+    return this._http.put(this._updateHoursInJira, body, options);
   }
 
   private extractResponseStatus(res: Response): string { //res: Response
@@ -87,7 +87,7 @@ export class WorklogService {
   private handleError (error: any) {
     // In a real world app, we might send the error to remote logging infrastructure
     let errMsg = error.message || 'Server error';
-    console.error(errMsg); // log to console instead
+    console.log(errMsg); // log to console instead
     return Promise.reject(errMsg);
   }
 

@@ -18,5 +18,5 @@ export class CatsParams {
   public baseUrl: string = null;
   public username: string = null;
   public password: string = null;
-  public filter: string = null;
+  public catsQuery: string = null;
 }
