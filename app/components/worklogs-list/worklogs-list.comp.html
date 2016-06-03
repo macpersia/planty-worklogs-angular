@@ -1,7 +1,5 @@
 
-<h1>{{title}}</h1>
-
-<md-card style="width: 60%" class="demo-card demo-basic">
+<md-card style="width: 35em">
   <md-toolbar color="primary">Date Criteria</md-toolbar>
   <md-card-content>
     <!-- <form> -->
@@ -23,7 +21,8 @@
 
 <span>
   <span class="fill-remaining-space"></span>
-  <button style="margin-top: 2em; margin-right: 2em" md-raised-button color="primary" (click)="retrieveWorklogs()">Retrieve Worklogs</button>
+  <button style="margin-top: 2em; margin-right: 2em" md-raised-button color="primary"
+          (click)="retrieveWorklogs()">Retrieve Worklogs</button>
 </span>
 
 <h2>Matching Worklogs</h2>
@@ -31,9 +30,9 @@
   <md-progress-bar mode="indeterminate" *ngSwitchWhen="true"></md-progress-bar>
 </div>
 
-<ul class="worklogs" style="width: 70%">
+<ul class="worklogs" style="width: 40em">
 
-  <li *ngFor="#worklog of worklogs"
+  <li *ngFor="let worklog of worklogs; let i = index"
       [class.selected]="worklog === selectedWorklog"
       (click)="onSelect(worklog)">
     <!-- <span class="date">{{worklog.date | date}}</span> -->
@@ -46,12 +45,8 @@
     <span class="fixed-spacer"></span>
 
     <span [ngSwitch]="worklog.durationInJira != worklog.durationInCats">
-      <button md-icon-button *ngSwitchWhen=true disabled style="color:red"> <!---->
-        <i class="material-icons md-24">close</i>
-      </button>
-      <button md-icon-button *ngSwitchWhen=false disabled style="color:green"> <!---->
-        <i class="material-icons md-24">check</i>
-      </button>
+      <md-icon *ngSwitchWhen=true style="color: red" class="md-24">error_outline</md-icon>
+      <md-icon *ngSwitchWhen=false style="color: green" class="md-24">done</md-icon>
     </span>
 
     <span class="fixed-spacer"></span>
@@ -59,14 +54,28 @@
       <i class="material-icons md-24">arrow_back</i>
     </button>
     <span class="duration">{{worklog.durationInCats}}</span>
-  </li>
+    <br>
+    <!-- <md-card [style.display]="displayForCard(worklog)"> -->
+    <!-- <md-card [style.display]="worklog === selectedWorklog ? 'inline' : 'none'"> -->
+    <md-card *ngIf="worklogsPendingJiraComment[i]">
+       <md-card-subtitle>Creating a Worklog in JIRA</md-card-subtitle>
+       <md-card-title>Additional Details Required</md-card-title>
+       <md-card-content>
+            <md-input placeholder="Comment" [(ngModel)]="worklog.commentInJira" style="width: 100%"></md-input>
+       </md-card-content>
+       <md-card-actions>
+            <button md-button (click)="updateJira(worklog)">SUBMIT</button>
+            <button md-button (click)="worklogsPendingJiraComment[i] = false">CANCEL</button>
+       </md-card-actions>
+    </md-card>
+    </li>
 </ul>
-<div *ngIf="selectedWorklog">
+<!-- <div *ngIf="selectedWorklog">
   <h4>
     Logged at {{selectedWorklog.date}}
   </h4>
   <button (click)="gotoDetails()">View Details</button>
-</div>
+</div> -->
 <!--
 New Worklog:
 <input #newWorklog />

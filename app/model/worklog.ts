@@ -7,7 +7,8 @@ export class Worklog {
     public date: Date,
     public description: string,
     public durationInJira: number,
-    public durationInCats: number
+    public durationInCats: number,
+    public commentInJira: string
   ) {}
 
   public static fromJson(obj: any): Worklog {
@@ -16,7 +17,8 @@ export class Worklog {
       DateWrapper.fromISOString(obj.date),
       obj.description,
       obj.durationInJira,
-      obj.durationInCats
+      obj.durationInCats,
+      obj.commentInJira
     );
   }
 

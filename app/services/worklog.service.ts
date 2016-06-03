@@ -14,10 +14,12 @@ import { ReportParams } from '../model/report-params';
 @Injectable()
 export class WorklogService {
 
-  // private _worklogsListUrl = 'https://diy-planty.rhcloud.com/worklogs';
-  //private _worklogsListUrl = 'http://localhost:9000/worklogs';
-  private _worklogsListUrl = 'http://10.95.98.119:9000/worklogs';
-  private _updateHoursInJira = 'http://10.95.98.119:9000/worklogHours';
+  private _baseUrl = 'http://localhost:9000';
+  // private _baseUrl = 'https://diy-planty.rhcloud.com';
+  // private _baseUrl = 'http://10.95.98.119:9000';
+  private _worklogsListUrl = this._baseUrl + '/worklogs';
+  private _updateJiraHoursUrl = this._baseUrl + '/jiraWorklogHours';
+
   private REPORT_PARAMS_STORAGE_KEY = 'report_params';
 
   constructor(private _http: Http) {}
@@ -46,6 +48,30 @@ export class WorklogService {
                     .catch(this.handleError);
   }
 
+  createWorklogInJira(params: {
+    'connConfig': { 'baseUri': string; 'username': string; 'password': string; };
+    'key': string; 'date': string; 'tzOffsetMinutes': number; 'duration': number; 'comment': string;
+  }): any {
+
+    console.log('>>>>> START worklog-service--updateHoursInJira <<<<<');
+    console.log(params);
+
+    let body = JSON.stringify(params);
+    console.log(body);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    //return MOCK_UPDATED_JIRA_WORKLOG;
+    /*
+     return new Promise<Worklog>((resolve, reject) => {
+       resolve(MOCK_UPDATED_JIRA_WORKLOG);
+     }); */
+
+     //return this.extractResponseStatus();
+
+    // this.http.put(this._updateHoursInJira, body, options)
+    return this._http.post(this._updateJiraHoursUrl, body, options);
+  }
+
   updateHoursInJira(params : any): Observable<Response> {
     console.log('>>>>> START worklog-service--updateHoursInJira <<<<<');
     console.log(params);
@@ -63,7 +89,7 @@ export class WorklogService {
      //return this.extractResponseStatus();
 
     // this.http.put(this._updateHoursInJira, body, options)
-    return this._http.put(this._updateHoursInJira, body, options);
+    return this._http.put(this._updateJiraHoursUrl, body, options);
   }
 
   private extractResponseStatus(res: Response): string { //res: Response

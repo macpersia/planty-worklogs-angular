@@ -3,12 +3,13 @@ import { Component, Input, OnInit } from '@angular/core';
 // import { Router, OnActivate, RouteSegment } from '@angular/router-deprecated';
 import { Router, OnActivate, RouteData, RouteParams } from '@angular/router-deprecated';
 
-import { MdCard } from '@angular2-material/card/card';
-import { MdToolbar } from '@angular2-material/toolbar/toolbar';
-import { MdInput, MdHint } from '@angular2-material/input/input';
-import { MdButton } from '@angular2-material/button/button';
-import { MdProgressBar } from '@angular2-material/progress-bar/progress-bar';
-import { MdProgressCircle } from '@angular2-material/progress-circle/progress-circle';
+import { MD_ICON_DIRECTIVES, MdIconRegistry } from '@angular2-material/icon/icon';
+import { MD_CARD_DIRECTIVES } from '@angular2-material/card/card';
+import { MD_TOOLBAR_DIRECTIVES } from '@angular2-material/toolbar/toolbar';
+import { MD_INPUT_DIRECTIVES } from '@angular2-material/input/input';
+import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button/button';
+import { MD_PROGRESS_BAR_DIRECTIVES } from '@angular2-material/progress-bar/progress-bar';
+import { MD_PROGRESS_CIRCLE_DIRECTIVES } from '@angular2-material/progress-circle/progress-circle';
 
 import { Worklog } from '../../model/worklog';
 import { ReportParams } from '../../model/report-params';
@@ -23,14 +24,18 @@ import { MyDateWorkaroudPipe } from '../../pipes/my-date-workaround-pipe';
     styleUrls: ['app/components/worklogs-list/worklogs-list.comp.css'],
     pipes: [ MyDateWorkaroudPipe ],
     directives: [
-      MdCard, MdToolbar, MdInput, MdHint, MdButton,
-      MdProgressBar, MdProgressCircle
+      MD_ICON_DIRECTIVES, MD_CARD_DIRECTIVES, MD_TOOLBAR_DIRECTIVES, MD_INPUT_DIRECTIVES,
+      MD_BUTTON_DIRECTIVES, MD_PROGRESS_BAR_DIRECTIVES, MD_PROGRESS_CIRCLE_DIRECTIVES
+    ],
+    providers: [
+      MdIconRegistry
     ]
 })
 export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
 
   private reportParams = new ReportParams();
   worklogs: Worklog[];
+  worklogsPendingJiraComment: boolean[] = [];
   selectedWorklog: Worklog;
   errorMessage;
   isLoading = false;
@@ -134,39 +139,58 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
   updateJira(worklog : Worklog) {
     console.log('>>>>> START updateJira()');
     console.log(worklog);
+    let jiraConnConfig = {
+      'baseUri': this.reportParams.jiraParams.baseUrl,
+      'username': this.reportParams.jiraParams.username,
+      'password': this.reportParams.jiraParams.password
+    }
+    let params = {
+      'connConfig': jiraConnConfig,
+      'key': worklog.description,
+      'date': new MyDateWorkaroudPipe().transform(worklog.date, []),
+      'tzOffsetMinutes': this.reportParams.tzOffsetMinutes,
+      'duration': worklog.durationInCats,
+      'comment': worklog.commentInJira
+    };
     if (worklog.durationInJira === undefined) {
       console.log('............ ADD entry in JIRA ............');
+      if (!worklog.commentInJira)
+        this.worklogsPendingJiraComment[this.worklogs.indexOf(worklog)] = true;
+      else {
+        let status = this._worklogService.createWorklogInJira(params)
+              .subscribe(
+                res => {
+                  console.log('....................what is res');
+                  console.log(res);
+                  console.log(res.status);
+                  console.log(res.statusText);
+                  if (res.statusText === 'Ok') {
+                    console.log('>>> successfully created the worklog in Jira from: '
+                                  + worklog.durationInJira +' to: ' + worklog.durationInCats);
+                    worklog.durationInJira = worklog.durationInCats;
+                    this.worklogsPendingJiraComment[this.worklogs.indexOf(worklog)] = false;
+                  }
+                },
+                error => {}
+              );
+      }
     } else if (worklog.durationInCats && worklog.durationInCats != worklog.durationInJira) {
       console.log('............ UPDATE hours in JIRA ............');
-
-      let jiraConnConfig = {
-        'baseUri': this.reportParams.jiraParams.baseUrl,
-        'username': this.reportParams.jiraParams.username,
-        'password': this.reportParams.jiraParams.password
-      }
-
-      let params = {
-        'connConfig': jiraConnConfig,
-        'key': worklog.description,
-        'date': new MyDateWorkaroudPipe().transform(worklog.date, []),
-        'duration': worklog.durationInCats
-      };
-
       let status = this._worklogService.updateHoursInJira(params)
-      .subscribe(
-        res => {
-          console.log('....................what is res');
-          console.log(res);
-          console.log(res.status);
-          console.log(res.statusText);
-          if (res.statusText === 'Ok') {
-          console.log('>>> successfully updated the hours in Jira from: ' +worklog.durationInJira +' to: ' +worklog.durationInCats);
-          worklog.durationInJira = worklog.durationInCats;
-        }
-      },
-        error => {}
-      );
-
+            .subscribe(
+              res => {
+                console.log('....................what is res');
+                console.log(res);
+                console.log(res.status);
+                console.log(res.statusText);
+                if (res.statusText === 'Ok') {
+                  console.log('>>> successfully updated the hours in Jira from: '
+                                + worklog.durationInJira +' to: ' + worklog.durationInCats);
+                  worklog.durationInJira = worklog.durationInCats;
+                }
+              },
+              error => {}
+            );
       /*
       this._worklogService.updateHoursInJira(params)
       .then(
@@ -203,10 +227,13 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
 
   onSelect(worklog: Worklog) {
     // // if (console) console.log(">>>> clicked on worklog: " + worklog);
-    // this.selectedWorklog = worklog;
+    if (this.selectedWorklog != worklog)
+      this.selectedWorklog = worklog;
+    else
+      this.selectedWorklog = null;
   }
 
-  gotoDetails() {
-    this._router.navigate(['WorklogDetails', { key: this.selectedWorklog.key }]);
-  }
+  // gotoDetails() {
+  //   this._router.navigate(['WorklogDetails', { key: this.selectedWorklog.key }]);
+  // }
 }

@@ -1,7 +1,11 @@
 
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
 .selected {
   background-color: #CFD8DC !important;
-  color: white;
+  color: #444;
 }
 .worklogs {
   margin: 0 0 2em 0;
@@ -10,23 +14,26 @@
   width: 40em;
 }
 .worklogs li {
-  cursor: pointer;
+  /*cursor: pointer;*/
   position: relative;
   left: 0;
   background-color: #EEE;
-  margin: .5em;
-  padding: 0 .3em 0 0;
+  margin: .5em 0 .5em .5em;
+  padding: 0;
   /*height: 1.6em;*/
   border-radius: 4px;
 }
 .worklogs li.selected:hover {
   background-color: #BBD8DC !important;
-  color: white;
+  color: #444;
 }
 .worklogs li:hover {
   color: #607D8B;
   background-color: #DDD;
   /*left: .1em;*/
+}
+.worklogs button:disabled {
+  background-color: inherit;
 }
 .worklogs .text {
   position: relative;
@@ -35,7 +42,7 @@
 .worklogs .date {
   vertical-align: baseline;
   display: inline-block;
-  font-size: small;
+  /*font-size: small;*/
   color: white;
   padding: 0.7em;
   background-color: #607D8B;
@@ -56,9 +63,9 @@
   display: inline-block;
   /*font-size: small;*/
   position: relative;
-  margin-left: 2em;
+  margin-left: 3em;
   margin-right: 2em;
-  width: 10em;
+  width: 6em;
 }
 
 .worklogs .duration {
@@ -66,12 +73,17 @@
   display: inline-block;
   /*font-size: small;*/
   position: relative;
+  margin-left: .7em;
   margin-right: .7em;
-  width: 4em;
+  width: 2em;
 }
 
 .worklogs .fixed-spacer {
   display: inline-block;
   position: relative;
-  width: 4em;
+  width: 2em;
+}
+
+.worklogs md-icon {
+  vertical-align: middle;
 }
