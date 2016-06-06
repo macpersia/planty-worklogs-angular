@@ -14,9 +14,10 @@ import { ReportParams } from '../model/report-params';
 @Injectable()
 export class WorklogService {
 
-  private _baseUrl = 'http://localhost:9000';
-  // private _baseUrl = 'https://diy-planty.rhcloud.com';
+  // private _baseUrl = 'http://localhost:9000';
+  private _baseUrl = 'https://diy-planty.rhcloud.com';
   // private _baseUrl = 'http://10.95.98.119:9000';
+
   private _worklogsListUrl = this._baseUrl + '/worklogs';
   private _updateJiraHoursUrl = this._baseUrl + '/jiraWorklogHours';
 
