@@ -30,6 +30,11 @@
     background-color: inherit;
 }
 
+.worklogs li.header:hover {
+  color: inherit !important;
+  background-color: inherit !important;
+}
+
 .worklogs li.selected:hover {
   background-color: #BBD8DC !important;
   color: #444;
