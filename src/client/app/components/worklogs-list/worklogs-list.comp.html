@@ -32,6 +32,24 @@
 
 <ul class="worklogs" style="width: 40em">
 
+  <!-- this list item holds the header -->
+  <li *ngIf="worklogs" class="header">
+    <span class="date" style="visibility: hidden">0000-00-00</span>
+    <span class="desc">Task/Ticket</span>
+    <span class="duration">JIRA</span>
+    <button md-icon-button style="visibility: hidden">
+      <i class="material-icons md-24"></i>
+    </button>
+    <span class="fixed-spacer"></span>
+    <md-icon class="md-24" style="visibility: hidden"></md-icon>
+    <span class="fixed-spacer"></span>
+    <button md-icon-button style="visibility: hidden">
+      <i class="material-icons md-24"></i>
+    </button>
+    <span class="duration">CATS</span>
+    <br>
+  </li>
+
   <li *ngFor="let worklog of worklogs; let i = index"
       [class.selected]="worklog === selectedWorklog"
       (click)="onSelect(worklog)">

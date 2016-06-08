@@ -19,6 +19,7 @@ import { MyDateWorkaroudPipe } from '../../pipes/my-date-workaround-pipe';
 
 
 @Component({
+    moduleId: module.id,
     selector: 'worklogs',
     templateUrl : 'worklogs-list.comp.html',
     styleUrls: ['worklogs-list.comp.css'],

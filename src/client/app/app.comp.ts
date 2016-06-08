@@ -17,7 +17,9 @@ import { ReportParams } from './model/report-params';
 @Component({
   moduleId: module.id,
   selector: 'worklogs-sync-app',
+  // templateUrl: 'app.comp.html',
   templateUrl: 'app.comp.html',
+  // styleUrls: ['app.comp.css'],
   styleUrls: ['app.comp.css'],
   directives: [ //[WorklogsComponent],
     ROUTER_DIRECTIVES,

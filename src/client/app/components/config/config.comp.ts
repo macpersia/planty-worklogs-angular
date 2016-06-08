@@ -13,6 +13,7 @@ import { WorklogService } from '../../services/worklog.service';
 import { ReportParams } from '../../model/report-params';
 
 @Component({
+  moduleId: module.id,
   selector: 'config',
   templateUrl: 'config.comp.html',
   // styleUrls: ['config.comp.css'],
