@@ -37,6 +37,7 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
   private reportParams = new ReportParams();
   worklogs: Worklog[];
   worklogsPendingJiraComment: boolean[] = [];
+  worklogsPendingCatsDetails: boolean[] = [];
   selectedWorklog: Worklog;
   errorMessage: string;
   isLoading = false;
@@ -211,10 +212,60 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
   updateCats(worklog : Worklog) {
     console.log('>>>>> START updateCats()');
     console.log(worklog);
+    let catsConnConfig = {
+      'baseUri': this.reportParams.catsParams.baseUrl,
+      'username': this.reportParams.catsParams.username,
+      'password': this.reportParams.catsParams.password
+    }
+    let params = {
+      'connConfig': catsConnConfig,
+      'key': worklog.description,
+      'date': new MyDateWorkaroudPipe().transform(worklog.date, []),
+      'tzOffsetMinutes': this.reportParams.tzOffsetMinutes,
+      'duration': worklog.durationInJira,
+      'activityId': worklog.activityIdInCats,
+      'orderId': worklog.orderIdInCats,
+      'suborderIdExt': worklog.suborderIdExtInCats
+    };
     if (worklog.durationInCats === undefined) {
-      console.log('............ ADD entry in CATS ............');
+      console.log('............ ADD entry in JIRA ............');
+      if (!worklog.orderIdInCats)
+        this.worklogsPendingCatsDetails[this.worklogs.indexOf(worklog)] = true;
+      else {
+        let status = this._worklogService.createWorklogInCats(params)
+              .subscribe(
+                res => {
+                  console.log('....................what is res');
+                  console.log(res);
+                  console.log(res.status);
+                  console.log(res.statusText);
+                  if (res.statusText === 'Ok') {
+                    console.log('>>> successfully created the worklog in CATS from: '
+                                  + worklog.durationInCats +' to: ' + worklog.durationInJira);
+                    worklog.durationInCats = worklog.durationInJira;
+                    this.worklogsPendingCatsDetails[this.worklogs.indexOf(worklog)] = false;
+                  }
+                },
+                error => {}
+              );
+      }
     } else if (worklog.durationInJira && worklog.durationInJira != worklog.durationInCats) {
       console.log('............ UPDATE hours in CATS ............');
+      let status = this._worklogService.updateHoursInCats(params)
+            .subscribe(
+              res => {
+                console.log('....................what is res');
+                console.log(res);
+                console.log(res.status);
+                console.log(res.statusText);
+                if (res.statusText === 'Ok') {
+                  console.log('>>> successfully updated the hours in CATS from: '
+                                + worklog.durationInCats +' to: ' + worklog.durationInJira);
+                  worklog.durationInCats = worklog.durationInJira;
+                }
+              },
+              error => {}
+            );
     }
   }
 

@@ -86,6 +86,19 @@
             <button md-button (click)="worklogsPendingJiraComment[i] = false">CANCEL</button>
        </md-card-actions>
     </md-card>
+    <md-card *ngIf="worklogsPendingCatsDetails[i]">
+       <md-card-subtitle>Creating a Worklog in CATS</md-card-subtitle>
+       <md-card-title>Additional Details Required</md-card-title>
+       <md-card-content>
+            <md-input placeholder="Activity ID" [(ngModel)]="worklog.activityIdInCats" style="width: 100%"></md-input>
+            <md-input placeholder="Order ID" [(ngModel)]="worklog.orderIdInCats" style="width: 100%"></md-input>
+            <md-input placeholder="Suborder ID (Extension)" [(ngModel)]="worklog.suborderIdExtInCats" style="width: 100%"></md-input>
+       </md-card-content>
+       <md-card-actions>
+            <button md-button (click)="updateCats(worklog)">SUBMIT</button>
+            <button md-button (click)="worklogsPendingCatsDetails[i] = false">CANCEL</button>
+       </md-card-actions>
+    </md-card>
     </li>
 </ul>
 <!-- <div *ngIf="selectedWorklog">

@@ -20,6 +20,7 @@ export class WorklogService {
 
   private _worklogsListUrl = this._baseUrl + '/worklogs';
   private _updateJiraHoursUrl = this._baseUrl + '/jiraWorklogHours';
+  private _updateCatsHoursUrl = this._baseUrl + '/catsWorklogHours';
 
   private REPORT_PARAMS_STORAGE_KEY = 'report_params';
 
@@ -61,15 +62,6 @@ export class WorklogService {
     console.log(body);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    //return MOCK_UPDATED_JIRA_WORKLOG;
-    /*
-     return new Promise<Worklog>((resolve, reject) => {
-       resolve(MOCK_UPDATED_JIRA_WORKLOG);
-     }); */
-
-     //return this.extractResponseStatus();
-
-    // this.http.put(this._updateHoursInJira, body, options)
     return this._http.post(this._updateJiraHoursUrl, body, options);
   }
 
@@ -91,6 +83,33 @@ export class WorklogService {
 
     // this.http.put(this._updateHoursInJira, body, options)
     return this._http.put(this._updateJiraHoursUrl, body, options);
+  }
+
+  createWorklogInCats(params: {
+    'connConfig': { 'baseUri': string; 'username': string; 'password': string; };
+    'key': string; 'date': string; 'tzOffsetMinutes': number; 'duration': number;
+    'activityId': string; 'orderId': string; 'suborderIdExt': string;
+  }): Observable<Response> {
+
+    console.log('>>>>> START worklog-service--updateHoursInCats <<<<<');
+    console.log(params);
+
+    let body = JSON.stringify(params);
+    console.log(body);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.post(this._updateCatsHoursUrl, body, options);
+  }
+
+  updateHoursInCats(params : any): Observable<Response> {
+    console.log('>>>>> START worklog-service--updateHoursInCats <<<<<');
+    console.log(params);
+
+    let body = JSON.stringify(params);
+    console.log(body);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.put(this._updateCatsHoursUrl, body, options);
   }
 
   private extractResponseStatus(res: Response): string { //res: Response

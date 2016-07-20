@@ -8,7 +8,10 @@ export class Worklog {
     public description: string,
     public durationInJira: number,
     public durationInCats: number,
-    public commentInJira: string
+    public commentInJira: string,
+    public activityIdInCats: string,
+    public orderIdInCats: string,
+    public suborderIdExtInCats: string
   ) {}
 
   public static fromJson(obj: any): Worklog {
@@ -18,7 +21,10 @@ export class Worklog {
       obj.description,
       obj.durationInJira,
       obj.durationInCats,
-      obj.commentInJira
+      obj.commentInJira,
+      obj.activityIdInCats,
+      obj.orderIdInCats,
+      obj.suborderIdExtInCats
     );
   }
 
