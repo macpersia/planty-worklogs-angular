@@ -50,10 +50,17 @@ export class WorklogsListComponent implements OnInit, OnActivate { // OnActivate
   ngOnInit() {
     console.log('>>>>> START worklogs-list--ngOnInit');
 
-    if (this._worklogService.getReportParams() !== null) {
-      this.reportParams = this._worklogService.getReportParams();
-    }
-    console.log(this.reportParams);
+    let params = this._worklogService.getReportParams();
+    if (params !== null) {
+      this.reportParams = params;
+      console.log(this.reportParams);
+
+    } else
+      this._worklogService.initReportParams()
+        .then(params => {
+          if (params) this.reportParams = params;
+         console.log(this.reportParams);
+        });
   }
 
   isReportParamsValid(reportParams : ReportParams) : boolean {

@@ -18,6 +18,7 @@ export class WorklogService {
   private _baseUrl = 'https://diy-planty.rhcloud.com';
   // private _baseUrl = 'http://10.95.98.119:9000';
 
+  private _initParamsUrl = this._baseUrl + '/initParams';
   private _worklogsListUrl = this._baseUrl + '/worklogs';
   private _updateJiraHoursUrl = this._baseUrl + '/jiraWorklogHours';
   private _updateCatsHoursUrl = this._baseUrl + '/catsWorklogHours';
@@ -29,6 +30,15 @@ export class WorklogService {
   setReportParams(reportParams : ReportParams) {
     localStorage.setItem(this.REPORT_PARAMS_STORAGE_KEY, JSON.stringify(reportParams));
     //localStorage.setItem(this.REPORT_PARAMS_STORAGE_KEY, JSON.stringify(reportParams));
+  }
+
+  initReportParams(): Promise<ReportParams> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this._http.get(this._initParamsUrl, options)
+                    .toPromise()
+                    .then(this.extractConfig)
+                    .catch(this.handleError);
   }
 
   getReportParams() : ReportParams {
@@ -46,7 +56,7 @@ export class WorklogService {
     let options = new RequestOptions({ headers: headers });
     return this._http.post(this._worklogsListUrl, body, options)
                     .toPromise()
-                    .then(this.extractData)
+                    .then(this.extractWorklogs)
                     .catch(this.handleError);
   }
 
@@ -122,8 +132,15 @@ export class WorklogService {
     return res.statusText;
   }
 
-  private extractData(res: Response) {
-    if (res.status < 200 || res.status >= 300) {
+private extractConfig(res: Response): ReportParams {
+  if (res.status < 200 || res.status >= 300) {
+    throw new Error('Bad response status: ' + res.status);
+  }
+  return res.json();
+}
+
+private extractWorklogs(res: Response): Worklog[] {
+  if (res.status < 200 || res.status >= 300) {
       throw new Error('Bad response status: ' + res.status);
     }
     let matches = res.json().matches;

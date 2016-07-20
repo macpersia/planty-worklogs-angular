@@ -37,6 +37,9 @@ export class ConfigComponent {
     console.log(storedReportParams);
     if (storedReportParams)
       this.reportParams = storedReportParams;
+    else
+      this._worklogService.initReportParams()
+        .then(params => { if (params) this.reportParams = params; });
   }
 
   saveReportParams() {
