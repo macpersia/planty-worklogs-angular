@@ -4,10 +4,13 @@
   "author": "Hadi Ahmadi <macpersia>",
   "contributors": [
     {
-      "name": "m-a-l-p <m-a-l-p>",
+      "name": "m-a-l-p <m-a-l-p>"
+    },
+    {
       "name": "Chris9224 <Chris9224>"
     }
-  ],  "scripts": {
+  ],
+  "scripts": {
     "build.dev": "gulp build.dev --color",
     "build.dev.watch": "gulp build.dev.watch --color",
     "build.e2e": "gulp build.e2e --color",
