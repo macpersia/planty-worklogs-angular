@@ -1,0 +1,123 @@
+
+<mat-card style="width: 35em">
+  <mat-toolbar color="primary">Date Criteria</mat-toolbar>
+  <mat-card-content>
+    <!-- <form> -->
+    <!-- <table style="width: 100%" cellspacing="0"><tr> -->
+    <table style="width: 100%">
+      <tr>
+        <td>
+          <mat-form-field>
+            <input matInput placeholder="From" style="width: 100%"
+              [(ngModel)]="reportParams.fromDate" />
+            <mat-hint align="end">Date ('yyyy-MM-dd')</mat-hint>
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+            <input matInput placeholder="To" style="width: 100%"
+              [(ngModel)]="reportParams.toDate" />
+            <mat-hint align="end">Date ('yyyy-MM-dd')</mat-hint>
+          </mat-form-field>
+        </td>
+    </tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+<span>
+  <span class="fill-remaining-space"></span>
+  <button style="margin-top: 2em; margin-right: 2em" md-raised-button color="primary"
+          (click)="retrieveWorklogs()">Retrieve Worklogs</button>
+</span>
+
+<h2>Matching Worklogs</h2>
+<div [ngSwitch]="isLoading">
+  <mat-progress-bar mode="indeterminate" *ngSwitchCase="true"></mat-progress-bar>
+</div>
+
+<ul class="worklogs" style="width: 40em">
+
+  <!-- this list item holds the header -->
+  <li *ngIf="worklogs" class="header">
+    <span class="date" style="visibility: hidden">0000-00-00</span>
+    <span class="desc">Task/Ticket</span>
+    <span class="duration">JIRA</span>
+    <button mat-icon-button style="visibility: hidden">
+      <i class="material-icons md-24"></i>
+    </button>
+    <span class="fixed-spacer"></span>
+    <mat-icon class="md-24" style="visibility: hidden"></mat-icon>
+    <span class="fixed-spacer"></span>
+    <button mat-icon-button style="visibility: hidden">
+      <i class="material-icons md-24"></i>
+    </button>
+    <span class="duration">CATS</span>
+    <br>
+  </li>
+
+  <li *ngFor="let worklog of worklogs; let i = index"
+      [class.selected]="worklog === selectedWorklog"
+      (click)="onSelect(worklog)">
+    <!-- <span class="date">{{worklog.date | date}}</span> -->
+    <span class="date">{{worklog.date | myDateWorkaround}}</span>
+    <span class="desc">{{worklog.description}}</span>
+    <span class="duration">{{worklog.durationInJira}}</span>
+    <button mat-icon-button color="primary" (click)="updateCats(worklog)" [disabled]="isSynchronized(worklog)"> <!---->
+      <i class="material-icons md-24">arrow_forward</i>
+    </button>
+    <span class="fixed-spacer"></span>
+
+    <span [ngSwitch]="worklog.durationInJira != worklog.durationInCats">
+      <mat-icon *ngSwitchCase=true style="color: red" class="md-24">error_outline</mat-icon>
+      <mat-icon *ngSwitchCase=false style="color: green" class="md-24">done</mat-icon>
+    </span>
+
+    <span class="fixed-spacer"></span>
+    <button mat-icon-button color="primary" (click)="updateJira(worklog)" [disabled]="isSynchronized(worklog)"> <!---->
+      <i class="material-icons md-24">arrow_back</i>
+    </button>
+    <span class="duration">{{worklog.durationInCats}}</span>
+    <br>
+    <!-- <mat-card [style.display]="displayForCard(worklog)"> -->
+    <!-- <mat-card [style.display]="worklog === selectedWorklog ? 'inline' : 'none'"> -->
+    <mat-card *ngIf="worklogsPendingJiraComment[i]">
+       <mat-card-subtitle>Creating a Worklog in JIRA</mat-card-subtitle>
+       <mat-card-title>Additional Details Required</mat-card-title>
+       <mat-card-content>
+          <input matInput placeholder="Comment" [(ngModel)]="worklog.commentInJira" style="width: 100%" />
+       </mat-card-content>
+       <mat-card-actions>
+          <button md-button (click)="updateJira(worklog)">SUBMIT</button>
+          <button md-button (click)="worklogsPendingJiraComment[i] = false">CANCEL</button>
+       </mat-card-actions>
+    </mat-card>
+    <mat-card *ngIf="worklogsPendingCatsDetails[i]">
+       <mat-card-subtitle>Creating a Worklog in CATS</mat-card-subtitle>
+       <mat-card-title>Additional Details Required</mat-card-title>
+       <mat-card-content>
+            <input matInput placeholder="Activity ID" [(ngModel)]="worklog.activityIdInCats" style="width: 100%" />
+            <input matInput placeholder="Order ID" [(ngModel)]="worklog.orderIdInCats" style="width: 100%" />
+            <input matInput placeholder="Suborder ID (Extension)" [(ngModel)]="worklog.suborderIdExtInCats" style="width: 100%" />
+       </mat-card-content>
+       <mat-card-actions>
+            <button md-button (click)="updateCats(worklog)">SUBMIT</button>
+            <button md-button (click)="worklogsPendingCatsDetails[i] = false">CANCEL</button>
+       </mat-card-actions>
+    </mat-card>
+    </li>
+</ul>
+<!-- <div *ngIf="selectedWorklog">
+  <h4>
+    Logged at {{selectedWorklog.date}}
+  </h4>
+  <button (click)="gotoDetails()">View Details</button>
+</div> -->
+<!--
+New Worklog:
+<input #newWorklog />
+<button (click)="addWorklog(newWorklog.value); newWorklog.value=''">
+  Add Worklog
+</button>
+<div class="error" *ngIf="errorMessage">{{errorMessage}}</div>
+-->

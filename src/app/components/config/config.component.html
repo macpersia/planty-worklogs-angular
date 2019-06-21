@@ -1,0 +1,100 @@
+<div class="content-container" layout="row">
+  <div class="content-content" layout="column" layout-gt-xs="row">
+    <mat-card style="width: 40em" class="demo-card demo-basic">
+      <mat-toolbar color="accent">JIRA</mat-toolbar>
+      <mat-card-content>
+        <table>
+          <tr>
+            <td colspan="2">
+              <mat-form-field>
+                <input matInput placeholder="Base URL" style="width: 100%"
+                  [(ngModel)]="reportParams.jiraParams.baseUrl" />
+                <mat-hint align="end">Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field>
+                <input matInput placeholder="Username" [(ngModel)]="reportParams.jiraParams.username" />
+                <mat-hint align="end">Required</mat-hint>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input matInput placeholder="Password" [(ngModel)]="reportParams.jiraParams.password" type="password" />
+                <mat-hint align="end">Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <mat-form-field>
+                <input matInput placeholder="JIRA Query String" style="width: 100%"
+                  [(ngModel)]="reportParams.jiraParams.jiraQuery" />
+                <mat-hint align="end">Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field>
+                <input matInput placeholder="{{reportParams.jiraParams.username}}"
+                  [(ngModel)]="reportParams.jiraParams.author" />
+                <mat-hint align="start">Author's Username</mat-hint>
+                <mat-hint align="end">(Optional)</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <!-- </form> -->
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card style="width: 40em" class="demo-card demo-basic">
+      <mat-toolbar color="accent">CATS</mat-toolbar>
+      <mat-card-content>
+        <table style="width: 100%" cellspacing="0">
+          <tr>
+            <td colspan="2">
+              <mat-form-field>
+                <input matInput placeholder="Base URL" style="width: 100%"
+                  [(ngModel)]="reportParams.catsParams.baseUrl" />
+                <mat-hint align="end">Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field>
+                <input matInput placeholder="Username" [(ngModel)]="reportParams.catsParams.username" />
+                <mat-hint align="end">Required</mat-hint>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <input matInput placeholder="Password" [(ngModel)]="reportParams.catsParams.password" type="password" />
+                <mat-hint align="end">Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <mat-form-field>
+                <input matInput placeholder="CATS Query String" style="width: 100%"
+                  [(ngModel)]="reportParams.catsParams.catsQuery" />
+                <mat-hint align="end">Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+        <!-- </form> -->
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <span>
+    <span class="fill-remaining-space"></span>
+    <button style="margin-top: 2em; margin-right: 2em" md-raised-button color="primary"
+      (click)="saveReportParams()">Done</button>
+  </span>
+</div>
